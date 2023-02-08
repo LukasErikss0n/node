@@ -1,4 +1,3 @@
-const { count } = require('console');
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -7,22 +6,15 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const db = require("./server-con")
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-app.get('/username.html', (req, res) => {
-  res.sendFile(__dirname + '/username.html');
-});
+app.use(express.static('public'))
+
+
 
 let counter = 1
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.broadcast.emit('hi');
-
   counter += 1
-
-
 
   socket.on('chat message', async (msg) => {
     let socketId = socket.id
